@@ -1,5 +1,58 @@
 {% extends "base.html" %}
-{% block title %}login{% endblock title %}
+{% block title %}Login{% endblock title %}
 {% block content %}
-<p>HomePage</p>
+
+{% if messages %}
+<div class="position-fixed top-0 end-0 p-3" style="z-index: 1050;">
+    {% for msg in messages %}
+    <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="10000">
+        <div class="toast-header bg-{{ msg.tags }}">
+            <strong class="me-auto">Notification</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            {{ msg }}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<div class="container-sm d-flex justify-content-center align-items-center">
+    <div class="card shadow-lg border-0 rounded-4 p-4" style="max-width: 700px; width: 100%; background: #f9f9f9;">
+        <div class="row align-items-center">
+            <!-- Profile Image Section -->
+            <div class="col-md-5 text-center">
+                <div class="circle-container mx-auto" style="width: 150px; height: 150px;">
+                    <img src="{{ user_profile.profile_picture.url }}" alt="Profile Image"
+                        class="rounded-circle shadow-sm"
+                        style="width: 100%; height: 100%; object-fit: cover; border: 5px solid #fff;">
+                </div>
+            </div>
+
+            <!-- Bio Section -->
+            <div class="col-md-7 d-flex align-items-center p-3">
+                <p class="text-muted text-center w-100"
+                    style="font-family: 'Poppins', sans-serif; font-size: 18px; font-weight: 500;">
+                    "{{ user_profile.bio }}"
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="d-flex align-items-center justify-content-around p-2">
+    <div></div>
+    <div>
+        <button type="button" class="btn btn-success"><a href="" class="text-white text-decoration-none"><i
+                    class="fa-solid fa-plus"></i></a></button>
+        <button type="button" class="btn btn-secondary"><a href="{% url "profile" %}" class="text-white text-decoration-none"><i
+                    class="fa-solid fa-user"></i></a></button>
+        <button type="button" class="btn btn-danger"><a href="{% url "logout" %}" class="text-white text-decoration-none"><i
+                    class="fa-solid fa-right-from-bracket"></i></a></button>
+    </div>
+
+</div>
+
+
 {% endblock content %}

@@ -1,5 +1,79 @@
 {% extends "base.html" %}
-{% block title %}profile{% endblock title %}
+{% load static %}
+
+{% block title %}Update Profile{% endblock title %}
+
 {% block content %}
-{{form.as_p}}
+{% if messages %}
+<div class="position-fixed top-0 end-0 p-3" style="z-index: 1050;">
+    {% for msg in messages %}
+    <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="10000">
+        <div class="toast-header bg-{{ msg.tags }}">
+            <strong class="me-auto">Notification</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            {{ msg }}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<div class="container d-flex justify-content-center">
+    <div class="p-3">
+        <h1 class="text-center mb-3">Update Profile</h1>
+        {% if form.errors %}
+        <div class="alert alert-danger">
+            <ul>
+                {% for field, errors in form.errors.items %}
+                {% for error in errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        <form method="post" novalidate enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-3 d-flex justify-content-center">
+                <div class="circle-container position-relative">
+                    {% if form.instance.profile_picture %}
+                    <img src="{{ form.instance.profile_picture.url }}" alt="Profile Image" class="profile-img">
+                    {% else %}
+                    <img src="{% static 'img/default-avatar.png' %}" alt="Profile Image" class="profile-img">
+                    {% endif %}
+                    
+                    <div class="upload-label">
+                        <i class="fa-solid fa-camera"></i>
+                    </div>
+                    
+                    <input type="file" name="profile_picture" id="profile_picture" accept="image/*" class="d-none">
+                    
+                    <div class="upload-menu" id="uploadMenu" style="display: none;">
+                        <button type="button" onclick="document.getElementById('profile_picture').click()">Upload Profile</button>
+                        <button type="button">Remove Profile</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                {{ form.bio.label_tag }}
+                {{ form.bio }}
+            </div>
+
+            <div class="mb-3 text-center">
+                <button type="submit" class="btn btn-success w-50">Update</button>
+            </div>
+            <div class="mb-3 text-center">
+                <a href="{% url 'home' %}" class="btn btn-danger w-50 text-white text-decoration-none">Discard</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% block extra_js %}
+<script src="{% static "blogs/js/blog.js" %}"></script>
+{% endblock extra_js %}
 {% endblock content %}

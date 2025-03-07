@@ -1,5 +1,56 @@
 {% extends "base.html" %}
-{% block title %}login{% endblock title %}
+{% block title %}Login{% endblock title %}
+
 {% block content %}
-{{form.as_p}}
+{% if messages %}
+<div class="position-fixed top-0 end-0 p-3" style="z-index: 1050;">
+    {% for msg in messages %}
+    <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="10000">
+        <div class="toast-header bg-{{ msg.tags }}">
+            <strong class="me-auto">Notification</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            {{ msg }}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+<div class="container d-flex justify-content-center mt-3">
+    <div class="p-3">
+        <h1 class="text-center">Login</h1>
+        {% if form.errors %}
+        <div class="alert alert-danger">
+            <ul>
+                {% for field, errors in form.errors.items %}
+                {% for error in errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        <form method="post" novalidate>
+            {% csrf_token %}
+            <div class="mb-3">
+                {{ form.username.label_tag }}
+                {{ form.username }}
+            </div>
+            <div class="mb-3">
+                {{ form.password.label_tag }}
+                {{ form.password }}
+            </div>
+            <div class="mb-3 text-center">
+                <button type="submit" class="btn btn-secondary w-100">Register</button>
+            </div>
+            <div class="mb-3 text-center">
+                <p>Already have an account? <a href="{% url 'register' %}">Register</a></p>
+            </div>
+        </form>
+    </div>
+</div>
+
+
 {% endblock content %}

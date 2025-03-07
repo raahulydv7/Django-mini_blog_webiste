@@ -56,6 +56,7 @@ class CustomUserProfileForm(forms.ModelForm):
                 attrs={
                     "class": "form-control",
                     "placeholder": "Write something about yourself...",
+                    "rows": 3,
                 }
             ),
             "profile_picture": forms.ClearableFileInput(
